@@ -10,5 +10,6 @@ class CovidProvince extends Model
     use HasFactory;
 
     protected $table = 'provinces';
-    
+    protected $fillable = ['name','area_id'];
+
 }

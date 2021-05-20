@@ -36,7 +36,10 @@
         <div class="form-group">
             <label for="province">Province:</label>
             <select name="province" id="province_name" class="form-control input-lg dynamic">
-                    <option value="">Select Province</option>                
+                <option value="">Select Province</option>
+                @foreach($province as $data)
+                    <option value="{{$data->name}}">{{$data->name}}</option>
+                @endforeach
             </select>
 
             @if($errors->has('province')) <p>{{$errors->first('province')}}</p> @endif
@@ -46,10 +49,10 @@
         <div class="form-group">
             <label for="case">Case:</label>
             <select name="case" id="case" class="form-control input-lg">
-                    <option value="">Select Case</option> 
+                    <option value="">Select Case</option>
                 @foreach($case as $case)
                     <option value="{{$case->name}}">{{$case->name}}</option>
-                @endforeach               
+                @endforeach
             </select>
 
             @if($errors->has('case')) <p>{{$errors->first('case')}}</p> @endif
@@ -96,7 +99,7 @@
                     }
                 })
             }
-        }); 
+        });
 
     });
 </script>

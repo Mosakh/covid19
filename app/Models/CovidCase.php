@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CovidCase extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'cases';
+    protected $fillable = ['name'];
 
 }

@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CovidProvince;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class CovidArea extends Model
 {
     use HasFactory;
 
-    protected $table = 'areas as a';
+    protected $table = 'areas';
+    protected $fillable = ['name'];
 
     public function province()
     {
@@ -21,17 +22,17 @@ class CovidArea extends Model
     public function JoinData()
     {
         return DB::table('areas as a')
-                ->leftjoin('provinces AS p', 'p.area_id', '=', 'a.id')
-                ->select('a.name As area_name', 'p.name As province_name')
-                ->groupBy('a.name')
+                ->leftjoin('provinces as p', 'p.area_id', '=', 'a.id')
+                ->select('a.name as area_name', 'p.name as province_name')
+                // ->groupBy('a.name')
                 ->get();
     }
-    
+
     public function JoinFetch()
     {
         return DB::table('areas as a')
-                ->leftjoin('provinces AS p', 'p.area_id', '=', 'a.id')
-                ->select('a.name As area_name', 'p.name As province_name');
-                
+                ->leftjoin('provinces as p', 'p.area_id', '=', 'a.id')
+                ->select('a.name as area_name', 'p.name as province_name');
+
     }
 }

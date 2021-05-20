@@ -5,40 +5,66 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Input;
 use Validator;
-use Redirect;
 use DB;
 use App\Models\CovidArea;
 use App\Models\CovidList;
 use App\Models\CovidCase;
 use App\Models\CovidProvince;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\CreateBackendRequest;
 
 class BackendController extends Controller
 {
-    public function store(CreateBackendRequest $request)
-    {        
-            $store = new CovidList();
-            $store->area        = $request->input('area');
-            $store->province    = $request->input('province');
-            $store->case    = $request->input('case');
-            $store->date    = $request->input('date');
-            $store->amount    = $request->input('amount');
+    public function index()
+    {
+        $case = CovidCase::all();
+        $province = CovidProvince::all();
+        $join = new CovidArea;
+        $value = $join->JoinData();
 
-            $store->save();
+        return view('entry' ,
+                    [
+                        'value' => $value,
+                        'case' => $case,
+                        'province' => $province,
+                    ]);
+    }
+    public function store(CreateBackendRequest $request)
+    {
+
+        $getname = $request->all();
+        $data =[
+            'area'=>$getname['area'],
+            'province'=>$getname['province'],
+            'case'=>$getname['case'],
+            'date'=>$getname['date'],
+            'amount'=>$getname['amount'],
+        ];
+        CovidList::create($data);
+            // $store = new CovidList();
+            // $store->area        = $request->input('area');
+            // $store->province    = $request->input('province');
+            // $store->case    = $request->input('case');
+            // $store->date    = $request->input('date');
+            // $store->amount    = $request->input('amount');
+
+            // $store->save();
             return Redirect::to('entry')->with('success', 'successfully submited');
-            
+
     }
 
     public function displayEntry()
     {
-        $case = CovidCase::get();       
+        $case = CovidCase::all();
+        $province = CovidProvince::all();
         $join = new CovidArea;
         $value = $join->JoinData();
-        
+
         return view('entry' ,
                     [
                         'value' => $value,
-                        'case' => $case,                    
+                        'case' => $case,
+                        'province' => $province,
                     ]);
     }
 
@@ -46,7 +72,7 @@ class BackendController extends Controller
     {
         $select = $request->get('select');
         $value = $request->get('value');
-        $dependent = $request->get('dependent');  
+        $dependent = $request->get('dependent');
         $join = new CovidArea;
         $data = $join->JoinFetch()
                       ->where($select, $value)
@@ -62,7 +88,7 @@ class BackendController extends Controller
     }
 
     public function displayListing()
-    {         
+    {
         $sum_amount = new CovidList;
         $total = $sum_amount->sumAmount();
         $totalArea = $sum_amount->sumArea();
@@ -70,7 +96,7 @@ class BackendController extends Controller
         $totalCase = $sum_amount->sumCase();
 
         $list = Covidlist::paginate(5);
-        return view('listing', 
+        return view('listing',
                     [
                         'list' => $list,
                         'total'=> $total,
@@ -90,14 +116,14 @@ class BackendController extends Controller
 
         $search_text = $request->get('search');
         $list = CovidList::where('area', 'LIKE', '%' . $search_text . '%')
-                        ->orwhere('province', 'LIKE', '%' . $search_text . '%')  
-                        ->orwhere('case', 'LIKE', '%' . $search_text . '%')  
-                        ->orwhere('date', 'LIKE', '%' . $search_text . '%')  
+                        ->orwhere('province', 'LIKE', '%' . $search_text . '%')
+                        ->orwhere('case', 'LIKE', '%' . $search_text . '%')
+                        ->orwhere('date', 'LIKE', '%' . $search_text . '%')
                         ->paginate(5);
-        
+
         return view('listing',
                      [
-                         'list' => $list, 
+                         'list' => $list,
                          'total'=> $total,
                          'sum_area'=> $totalArea,
                          'sum_province'=> $totalProvince,

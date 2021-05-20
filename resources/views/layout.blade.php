@@ -21,6 +21,11 @@
 
       <li class="active"><a href="/entry">Case entry</a></li>
       <li><a href="/listing">Case listing</a></li>
+      <li><a href="/covide/area">Area Ceate</a></li>
+      <li><a href="/covide/province">Province Create</a></li>
+      <li><a href="/covide/case">Case Create</a></li>
+
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li>
@@ -29,17 +34,17 @@
           <span class="glyphicon glyphicon-log-in"></span> Sign Out
         </a>
       </li>
-      
+
       @else
 
       <li><a href="{{URL::to('/register')}}"><span class="glyphicon glyphicon-user"></span> Create Account</a></li>
       <li><a href="{{URL::to('/signin')}}"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
-    
+
       @endif
     </ul>
   </div>
 </nav>
-  
+
 <div class="container">
 
   @yield('content')

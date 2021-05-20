@@ -11,6 +11,7 @@ class CovidList extends Model
     use HasFactory;
 
     protected $table = 'listcovids';
+    protected $fillable = ['area','case','province','date','amount'];
 
     public function sumAmount()
     {
