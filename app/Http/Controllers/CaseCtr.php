@@ -15,7 +15,7 @@ class CaseCtr extends Controller
     public function index()
     {
         $data = CovidCase::all();
-        return view('case.index',[]);
+        return view('case.index');
     }
 
     /**
